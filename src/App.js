@@ -1,8 +1,17 @@
-import React, { Component, createRef } from "react";
+import React, { Component } from "react";
 // import logo from "./logo.svg";
 import "./App.css";
 // import { render } from "@testing-library/react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { css } from "@emotion/core";
+import ClipLoader from "react-spinners/ClipLoader";
+
+// for spinner
+const override = css`
+  display: block;
+  margin: 25% auto;
+  border-color: red;
+`;
 
 let tempCity;
 
@@ -12,9 +21,9 @@ export default class App extends Component {
 
     this.state = {
       city: null,
-      country: null,
+      // country: null,
       weather: null,
-      description: null,
+      // description: null,
       error: "",
     };
   }
@@ -34,19 +43,24 @@ export default class App extends Component {
     let url;
     console.log("city", city);
 
-    if (city) {
-      url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`;
-    } else {
-      url = `https://api.openweathermap.org/data/2.5/weather?lon=${longtitude}&lat=${latitude}&appid=${apikey}&units=metric`;
-    }
+    try {
+      if (city) {
+        url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`;
+      } else {
+        url = `https://api.openweathermap.org/data/2.5/weather?lon=${longtitude}&lat=${latitude}&appid=${apikey}&units=metric`;
+      }
+      
 
-    let response = await fetch(url);
-    let data = await response.json();
-    console.log("data", data);
-    this.setState({ ...this.state, weather: data });
+      let response = await fetch(url);
+      let data = await response.json();
+      console.log("data", data);
+      this.setState({ ...this.state, weather: data });
+
+  } catch(e) {
+    alert("Please type in valid city");
+  }
   };
 
-  // why setState on change?
   onChangeSave(e) {
     e.preventDefault();
     tempCity = e.target.value;
@@ -62,7 +76,7 @@ export default class App extends Component {
     });
     console.log("this.state.city", this.state.city);
     // call getWeather again after we got the city
-    this.getWeather(0,0,tempCity);
+    this.getWeather(0, 0, tempCity);
   }
 
   componentDidMount() {
@@ -70,7 +84,18 @@ export default class App extends Component {
   }
 
   render() {
-    if (!this.state.weather) return <div>Loading</div>;
+    if (!this.state.weather)
+      return (
+        <div className="sweet-loading">
+          <ClipLoader
+          
+            css={override}
+            size={150}
+            color={"#purple"}
+            loading={this.state.loading}
+          />
+        </div>
+      );
     return (
       <>
         <div className="container">
@@ -90,7 +115,7 @@ export default class App extends Component {
                 <h1>{this.state.weather && this.state.weather.main.temp}ºC</h1>
                 <h5>
                   Humidity
-                  {this.state.weather && this.state.weather.main.humidity}
+                  <span className="ml-2">{this.state.weather && this.state.weather.main.humidity}</span>
                 </h5>
                 <div className="max-min-temp">
                   <h5>
