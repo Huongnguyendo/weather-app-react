@@ -10,7 +10,6 @@ body {
 }
 
 .wrapper {
-  background-image: url("/assets/img/warm-bg.jpg");
   background-clip: cover;
   background-repeat: no-repeat;
 
@@ -26,7 +25,16 @@ body {
   -ms-border-radius: 20px;
   -o-border-radius: 20px;
 
-  box-shadow: 3px 5px 3px 5px #6d6d6d;
+  box-shadow: 2px 3px 2px 3px #6d6d6d;
+}
+
+.warm {
+  background-image: url("/assets/img/warm-bg.jpg");
+}
+
+.cold {
+  background-image: url("/assets/img/cold-bg.jpg");
+  color: #2e34d9;
 }
 
 .input-form {

@@ -58,6 +58,7 @@ export default class App extends Component {
 
   } catch(e) {
     alert("Please type in valid city");
+    // this.getLocation();
   }
   };
 
@@ -99,7 +100,7 @@ export default class App extends Component {
     return (
       <>
         <div className="container">
-          <div className="wrapper">
+          <div className={`wrapper ${this.state.weather.main.temp > 20 ? "warm" : "cold"}`}>
             <form className="input-form" onSubmit={(e) => this.handleSubmit(e)}>
               <input
                 className="city-input"
