@@ -49,17 +49,15 @@ export default class App extends Component {
       } else {
         url = `https://api.openweathermap.org/data/2.5/weather?lon=${longtitude}&lat=${latitude}&appid=${apikey}&units=metric`;
       }
-      
 
       let response = await fetch(url);
       let data = await response.json();
       console.log("data", data);
       this.setState({ ...this.state, weather: data });
-
-  } catch(e) {
-    alert("Please type in valid city");
-    // this.getLocation();
-  }
+    } catch (e) {
+      alert("Please type in valid city");
+      // this.getLocation();
+    }
   };
 
   onChangeSave(e) {
@@ -89,7 +87,6 @@ export default class App extends Component {
       return (
         <div className="sweet-loading">
           <ClipLoader
-          
             css={override}
             size={150}
             color={"#purple"}
@@ -100,42 +97,41 @@ export default class App extends Component {
     return (
       <>
         <div className="container">
-          <div className={`wrapper ${this.state.weather.main.temp > 20 ? "warm" : "cold"}`}>
+          <div
+            className={`wrapper ${
+              this.state.weather.main.temp > 20 ? "warm" : "cold"
+            }`}
+          >
             <form className="input-form" onSubmit={(e) => this.handleSubmit(e)}>
               <input
                 className="city-input"
                 type="text"
                 placeholder="Search a city"
                 onChange={(e) => this.onChangeSave(e)}
+                // below func equals onChangeSave func
+                // onChange={(event) => {this.setState({...this.state, cityName: event.target.value})}}
               />
               <input className="city-submit" type="submit" value="Search" />
               <h2 className="mt-5">{this.state.weather.name}</h2>
               <div className="info">
                 {/* run following code only when state.weather is not null */}
 
-                <h1>{this.state.weather && this.state.weather.main.temp}ºC</h1>
+                <h1>{this.state.weather.main.temp}ºC</h1>
                 <h5>
                   Humidity
-                  <span className="ml-2">{this.state.weather && this.state.weather.main.humidity}</span>
+                  <span className="ml-2">
+                    {this.state.weather.main.humidity}
+                  </span>
                 </h5>
                 <div className="max-min-temp">
                   <h5>
-                    Min temp{" "}
-                    <p>
-                      {this.state.weather && this.state.weather.main.temp_min}
-                    </p>
+                    Min temp <p>{this.state.weather.main.temp_min}</p>
                   </h5>
                   <h5>
-                    Max temp{" "}
-                    <p>
-                      {this.state.weather && this.state.weather.main.temp_max}
-                    </p>
+                    Max temp <p>{this.state.weather.main.temp_max}</p>
                   </h5>
                 </div>
-                <h3>
-                  {this.state.weather &&
-                    this.state.weather.weather[0].description}
-                </h3>
+                <h3>{this.state.weather.weather[0].description}</h3>
               </div>
             </form>
           </div>
